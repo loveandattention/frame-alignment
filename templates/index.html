@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>帧同步平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body style="padding-left:80px; padding-right:80px">
+
+<h1>游戏总览</h1>
+<h3>筛选搜索</h3>
+
+<span>版本选择：</span>
+<span class="dropdown">
+    <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">4311</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">4312</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">4313</a>
+        </li>
+    </ul>
+</span>
+
+<span style="margin-left:80px">时间范围：</span>
+<span class="dropdown">
+    <button type="button" class="btn dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">11.1</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">11.2</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">11.3</a>
+        </li>
+    </ul>
+</span>
+
+<span style="margin-left:80px">最少玩家：</span>
+<span class="dropdown">
+    <button type="button" class="btn dropdown-toggle" id="dropdownMenu3" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">1</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">2</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">3</a>
+        </li>
+    </ul>
+</span>
+
+<h3>一致性情况</h3>
+<span><b>游戏局数：</b>8888</span>
+<span style="margin-left:80px"><b>不一致局数：</b>160</span>
+<span style="margin-left:80px"><b>同步率：</b>98.2%</span>
+<table class="table table-bordered table-hover">
+    <thead style="background-color:Silver">
+    <tr>
+        <th>GameId</th>
+        <th>玩家</th>
+        <th>服务器</th>
+        <th>开始时间</th>
+        <th>持续时间</th>
+        <th>是否一致</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for game_id, game in games.items() %}
+        <tr>
+            <td>{{ game_id }}</td>
+            <td>{{ game.player }}</td>
+            <td>{{ game.server }}</td>
+            <td>{{ game.startTime }}</td>
+            <td>{{ game.durationTime }}</td>
+            <td>{{ game.isConsistent }}</td>
+            <td>{{ game.operations }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<br/>
+<h1>对局详情</h1>
+
+<div style="float:left">
+    <div><h3>对战总览</h3></div>
+    <div>
+        <table class="table table-bordered table-hover">
+            <thead style="background-color:Silver">
+            <tr>
+                <th>开始时间</th>
+                <th>持续时间</th>
+                <th>服务器</th>
+                <th>一致性</th>
+                <th>玩家列表</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>ts1</td>
+                <td>t</td>
+                <td>Server</td>
+                <td>一致</td>
+                <td>aaa/bbb/ccc</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="float:left; margin-left:200px;">
+    <div><h3>回放总览</h3></div>
+    <div>
+        <table class="table table-bordered table-hover">
+            <thead style="background-color:Silver">
+            <tr>
+                <th>播放次数</th>
+                <th>收到不一致帧</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="clear:both">
+    <div><h3>对战详情</h3></div>
+    <div>
+        <table class="table table-bordered table-hover">
+            <thead style="background-color:Silver">
+            <tr>
+                <th>玩家</th>
+                <th>App版本</th>
+                <th>OS</th>
+                <th>OS版本</th>
+                <th>设备名</th>
+                <th>设备型号</th>
+                <th>设备ID</th>
+                <th>截止帧</th>
+                <th>查看详情</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>aaa</td>
+                <td>0.666</td>
+                <td>Android</td>
+                <td>11.4</td>
+                <td>xiaomi</td>
+                <td>x50</td>
+                <td>did</td>
+                <td>8000</td>
+                <td>快照hash</td>
+            </tr>
+            <tr>
+                <td>bbb</td>
+                <td>0.666</td>
+                <td>Android</td>
+                <td>11.4</td>
+                <td>xiaomi</td>
+                <td>x50</td>
+                <td>did</td>
+                <td>8000</td>
+                <td>快照hash</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+</body>
+</html>
