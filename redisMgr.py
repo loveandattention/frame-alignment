@@ -6,19 +6,25 @@ my_redis = redis.Redis(connection_pool=pool)
 
 
 # 将数据保存到Redis中
-def save_to_redis(mock_data):
-    for gameID in mock_data:
-        my_redis.hmset(gameID, mock_data[gameID])
+def save_to_redis(mock_data_game):
+    for game in mock_data_game:
+        my_redis.hmset(game, mock_data_game[game])
+        my_redis.sadd(mock_data_game[game]["edition"], mock_data_game[game]["id"])
 
 
 # 获取所有的对局信息
 def get_all_game_data():
-    game_data = {}
-    for game_id in my_redis.keys("game*"):
-        game_data[game_id] = my_redis.hgetall(game_id)
-    return game_data
+    games_data = {}
+    for game in my_redis.keys("game:*"):
+        games_data[game] = my_redis.hgetall(game)
+    return games_data
 
 
 # 获取指定ID的对局信息
 def get_game_details(game_id):
     return my_redis.hgetall(game_id)
+
+
+# 清空数据库
+def flush_db():
+    my_redis.flushdb()
