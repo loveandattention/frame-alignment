@@ -1,5 +1,5 @@
 mock_data_game = {
-    "game:1:aaa": {"id": "1",
+    "game:1:aaa": {"id": 1,
                    "player": "aaa",
                    "server": "QA服",
                    "startTime": "st1",
@@ -8,7 +8,7 @@ mock_data_game = {
                    "operations": "查看详情",
                    "edition": "4001"
                    },
-    "game:2:bbb": {"id": "2",
+    "game:2:bbb": {"id": 2,
                    "player": "bbb",
                    "server": "公共服",
                    "startTime": "st2",
@@ -17,7 +17,7 @@ mock_data_game = {
                    "operations": "查看详情",
                    "edition": "4001"
                    },
-    "game:3:ccc": {"id": "3",
+    "game:3:ccc": {"id": 3,
                    "player": "ccc",
                    "server": "公共服",
                    "startTime": "st3",
@@ -26,7 +26,7 @@ mock_data_game = {
                    "operations": "查看详情",
                    "edition": "4002"
                    },
-    "game:4:ddd": {"id": "4",
+    "game:4:ddd": {"id": 4,
                    "player": "ddd",
                    "server": "公共服",
                    "startTime": "st3",
@@ -35,7 +35,7 @@ mock_data_game = {
                    "operations": "查看详情",
                    "edition": "4002"
                    },
-    "game:5:eee": {"id": "1",
+    "game:5:eee": {"id": 5,
                    "player": "eee",
                    "server": "公共服",
                    "startTime": "st3",
@@ -44,7 +44,7 @@ mock_data_game = {
                    "operations": "查看详情",
                    "edition": "4003"
                    },
-    "game:6:fff": {"id": "6",
+    "game:6:fff": {"id": 6,
                    "player": "fff",
                    "server": "公共服",
                    "startTime": "st3",

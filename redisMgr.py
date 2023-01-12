@@ -28,3 +28,12 @@ def get_game_details(game_id):
 # 清空数据库
 def flush_db():
     my_redis.flushdb()
+
+
+# 获取指定版本的对局信息
+def get_edition_game_data(edition):
+    games_data = {}
+    for game_id in my_redis.smembers(edition):
+        for game in my_redis.keys("game:" + game_id + "*"):
+            games_data[game] = my_redis.hgetall(game)
+    return games_data
