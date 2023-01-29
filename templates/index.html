@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/editionSelection.js') }}"></script>
 </head>
 
 <body style="padding-left:80px; padding-right:80px">
@@ -19,18 +20,18 @@
     <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="editionList">
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="http://172.26.115.139:5000">/</a>
+            <a role="menuitem" tabindex="-1" href="{{ url_for("hello_world") }}" onclick="editionSelect()">/</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="http://172.26.115.139:5000/edition?edition=4001">4001</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect()">4001</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="http://172.26.115.139:5000/edition?edition=4002">4002</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect()">4002</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="http://172.26.115.139:5000/edition?edition=4003">4003</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect()">4003</a>
         </li>
     </ul>
 </span>
@@ -87,7 +88,7 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="gamesTable">
     {% for game_id, game in games.items() %}
         <tr>
             <td>{{ game.id }}</td>
@@ -96,7 +97,7 @@
             <td>{{ game.startTime }}</td>
             <td>{{ game.durationTime }}</td>
             <td>{{ game.isConsistent }}</td>
-            <td>{{ game.operations }}</td>
+            <td>查看详情</td>
         </tr>
     {% endfor %}
     </tbody>

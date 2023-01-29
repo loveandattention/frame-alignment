@@ -5,7 +5,6 @@ mock_data_game = {
                    "startTime": "st1",
                    "durationTime": "10分",
                    "isConsistent": 0,
-                   "operations": "查看详情",
                    "edition": "4001"
                    },
     "game:2:bbb": {"id": 2,
@@ -14,7 +13,6 @@ mock_data_game = {
                    "startTime": "st2",
                    "durationTime": "8分6秒",
                    "isConsistent": 1,
-                   "operations": "查看详情",
                    "edition": "4001"
                    },
     "game:3:ccc": {"id": 3,
@@ -23,7 +21,6 @@ mock_data_game = {
                    "startTime": "st3",
                    "durationTime": "10分",
                    "isConsistent": 1,
-                   "operations": "查看详情",
                    "edition": "4002"
                    },
     "game:4:ddd": {"id": 4,
@@ -32,7 +29,6 @@ mock_data_game = {
                    "startTime": "st3",
                    "durationTime": "10分",
                    "isConsistent": 1,
-                   "operations": "查看详情",
                    "edition": "4002"
                    },
     "game:5:eee": {"id": 5,
@@ -41,7 +37,6 @@ mock_data_game = {
                    "startTime": "st3",
                    "durationTime": "10分",
                    "isConsistent": 1,
-                   "operations": "查看详情",
                    "edition": "4003"
                    },
     "game:6:fff": {"id": 6,
@@ -50,7 +45,6 @@ mock_data_game = {
                    "startTime": "st3",
                    "durationTime": "10分",
                    "isConsistent": 1,
-                   "operations": "查看详情",
                    "edition": "4003"
                    }
 }

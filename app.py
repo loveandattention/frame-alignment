@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import redisMgr
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def hello_world():  # put application's code here
 def games_with_edition():
     edition = request.args.get("edition")
     games = redisMgr.get_edition_game_data(edition)
-    return render_template("index.html", games=games)
+    return jsonify({"code": 200, "message": "", "games": games})
 
 
 if __name__ == '__main__':
