@@ -1,5 +1,5 @@
-function editionSelect() {
-    var edition = event.currentTarget.innerText;
+function editionSelect(th) {
+    var edition = th.innerText;
     $.ajax({
         url: "edition?edition=" + edition,
         method: "GET",
@@ -11,17 +11,17 @@ function editionSelect() {
                 let str = "";
 
                 for (let game in games) {
-                    let playerName = "";
+                    let playersName = "";
                     for (var player of games[game].players) {
-                        playerName += player.name + " "
+                        playersName += player.name + " "
                     }
                     str += "<tr><td>" + games[game].id +
-                        "</td><td>" + playerName +
+                        "</td><td>" + playersName +
                         "</td><td>" + games[game].server +
                         "</td><td>" + games[game].startTime +
                         "</td><td>" + games[game].durationTime +
                         "</td><td>" + games[game].isConsistent +
-                        "</td><td>" + "查看详情" + "</td></tr>"
+                        "</td><td>" + "<a href=\"javascript:void(0)\" onclick=\"gameDetails(this)\" id=\"" + games[game].id + "\">查看详情</a>" + "</td></tr>"
                 }
 
                 $("#gamesTable").html(str)

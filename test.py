@@ -8,11 +8,11 @@ redisMgr.flush_db()
 redisMgr.save_to_redis(mock_data_game)
 
 # # 获取所有的对局信息
-games_data = redisMgr.get_all_game_data()
-print(games_data)
-print(type(games_data))
-print(type(games_data["game:4"]))
-print(type(games_data["game:4"]["players"]))
+# games_data = redisMgr.get_all_game_data()
+# print(games_data)
+# print(type(games_data))
+# print(type(games_data["game:4"]))
+# print(type(games_data["game:4"]["players"]))
 # for game in games_data:
 #     print(game)
 #     print(games_data[game])
@@ -20,3 +20,5 @@ print(type(games_data["game:4"]["players"]))
 
 
 # print(redisMgr.get_edition_game_data("4001"))
+
+print(redisMgr.get_id_game_data("1"))

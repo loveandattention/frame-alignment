@@ -18,5 +18,12 @@ def games_with_edition():
     return jsonify({"code": 200, "message": "", "games": games})
 
 
+@app.route("/id")
+def game_details():
+    id = request.args.get("id")
+    game = redisMgr.get_id_game_data(id)
+    return jsonify({"code": 200, "message": "", "game": game})
+
+
 if __name__ == '__main__':
     app.run()

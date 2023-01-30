@@ -33,3 +33,9 @@ def get_edition_game_data(edition):
         game = "game:" + game_id
         games_data[game] = json.loads(my_redis.get(game))
     return games_data
+
+
+# 获取指定id的对局信息
+def get_id_game_data(id):
+    game = json.loads(my_redis.get("game:" + id))
+    return game

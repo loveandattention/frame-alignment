@@ -8,6 +8,7 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='js/editionSelection.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gameDetails.js') }}"></script>
 </head>
 
 <body style="padding-left:80px; padding-right:80px">
@@ -22,16 +23,16 @@
     </button>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="editionList">
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="{{ url_for("hello_world") }}" onclick="editionSelect()">/</a>
+            <a role="menuitem" tabindex="-1" href="{{ url_for("hello_world") }}">/</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect()">4001</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect(this)">4001</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect()">4002</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect(this)">4002</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect()">4003</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="editionSelect(this)">4003</a>
         </li>
     </ul>
 </span>
@@ -99,7 +100,7 @@
             <td>{{ game.startTime }}</td>
             <td>{{ game.durationTime }}</td>
             <td>{{ game.isConsistent }}</td>
-            <td>查看详情</td>
+            <td><a href="javascript:void(0)" onclick="gameDetails(this)" id="{{ game.id }}">查看详情</a></td>
         </tr>
     {% endfor %}
     </tbody>
@@ -121,7 +122,7 @@
                 <th>玩家列表</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="battleTable">
             <tr>
                 <td>ts1</td>
                 <td>t</td>
@@ -144,7 +145,7 @@
                 <th>收到不一致帧</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="replayTable">
             <tr>
                 <td>0</td>
                 <td>0</td>
@@ -171,7 +172,7 @@
                 <th>查看详情</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="playersTable">
             <tr>
                 <td>aaa</td>
                 <td>0.666</td>
@@ -181,7 +182,7 @@
                 <td>x50</td>
                 <td>did</td>
                 <td>8000</td>
-                <td>快照hash</td>
+                <td><a>快照hash</a></td>
             </tr>
             <tr>
                 <td>bbb</td>
@@ -192,7 +193,7 @@
                 <td>x50</td>
                 <td>did</td>
                 <td>8000</td>
-                <td>快照hash</td>
+                <td><a>快照hash</a></td>
             </tr>
             </tbody>
         </table>
