@@ -11,8 +11,12 @@ function editionSelect() {
                 let str = "";
 
                 for (let game in games) {
+                    let playerName = "";
+                    for (var player of games[game].players) {
+                        playerName += player.name + " "
+                    }
                     str += "<tr><td>" + games[game].id +
-                        "</td><td>" + games[game].player +
+                        "</td><td>" + playerName +
                         "</td><td>" + games[game].server +
                         "</td><td>" + games[game].startTime +
                         "</td><td>" + games[game].durationTime +

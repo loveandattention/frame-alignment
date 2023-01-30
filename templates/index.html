@@ -92,7 +92,9 @@
     {% for game_id, game in games.items() %}
         <tr>
             <td>{{ game.id }}</td>
-            <td>{{ game.player }}</td>
+            <td>{% for player in game.players %}
+                {{ player.name }}
+                {% endfor %}</td>
             <td>{{ game.server }}</td>
             <td>{{ game.startTime }}</td>
             <td>{{ game.durationTime }}</td>
