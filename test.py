@@ -21,4 +21,7 @@ redisMgr.save_to_redis(mock_data_game)
 
 # print(redisMgr.get_edition_game_data("4001"))
 
-print(redisMgr.get_id_game_data("1"))
+# print(redisMgr.get_id_game_data("1"))
+
+
+print(redisMgr.get_player_counts_game_data(1))

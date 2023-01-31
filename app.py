@@ -18,6 +18,13 @@ def games_with_edition():
     return jsonify({"code": 200, "message": "", "games": games})
 
 
+@app.route("/playerCounts")
+def games_with_playerCounts():
+    counts = request.args.get("playerCounts")
+    games = redisMgr.get_player_counts_game_data(counts)
+    return jsonify({"code": 200, "message": "", "games": games})
+
+
 @app.route("/id")
 def game_details():
     id = request.args.get("id")

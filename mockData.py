@@ -1,5 +1,6 @@
 mock_data_game = {
     "game:1": {"id": 1,
+               "playerCounts": 1,
                "players": [{"name": "aaa", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
                             "deviceName": "xiaomi", "deviceType": "x50", "deviceId": "did", "stopFrame": "8000"},
                            {"name": "aaa2", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
@@ -14,6 +15,7 @@ mock_data_game = {
                "inconsistentCounts": 1
                },
     "game:2": {"id": 2,
+               "playerCounts": 2,
                "players": [{"name": "bbb", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
                             "deviceName": "xiaomi", "deviceType": "x50", "deviceId": "did", "stopFrame": "8000"},
                            {"name": "bbb2", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
@@ -28,6 +30,7 @@ mock_data_game = {
                "inconsistentCounts": 2
                },
     "game:3": {"id": 3,
+               "playerCounts": 3,
                "players": [{"name": "ccc", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
                             "deviceName": "xiaomi", "deviceType": "x50", "deviceId": "did", "stopFrame": "8000"},
                            {"name": "ccc2", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
@@ -42,6 +45,7 @@ mock_data_game = {
                "inconsistentCounts": 3
                },
     "game:4": {"id": 4,
+               "playerCounts": 4,
                "players": [{"name": "ddd", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
                             "deviceName": "xiaomi", "deviceType": "x50", "deviceId": "did", "stopFrame": "8000"},
                            {"name": "ddd2", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
@@ -56,6 +60,7 @@ mock_data_game = {
                "inconsistentCounts": 4
                },
     "game:5": {"id": 5,
+               "playerCounts": 5,
                "players": [{"name": "eee", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
                             "deviceName": "xiaomi", "deviceType": "x50", "deviceId": "did", "stopFrame": "8000"},
                            {"name": "eee2", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
@@ -70,6 +75,7 @@ mock_data_game = {
                "inconsistentCounts": 5
                },
     "game:6": {"id": 6,
+               "playerCounts": 6,
                "players": [{"name": "fff", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",
                             "deviceName": "xiaomi", "deviceType": "x50", "deviceId": "did", "stopFrame": "8000"},
                            {"name": "fff2", "appEdition": "0.666", "os": "Android", "osEdition": "11.4",

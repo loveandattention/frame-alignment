@@ -9,6 +9,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='js/editionSelection.js') }}"></script>
     <script src="{{ url_for('static', filename='js/gameDetails.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/playerCountsSelection.js') }}"></script>
 </head>
 
 <body style="padding-left:80px; padding-right:80px">
@@ -62,13 +63,22 @@
     </button>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">1</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="playerCountsSelection(this)">1</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">2</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="playerCountsSelection(this)">2</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">3</a>
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="playerCountsSelection(this)">3</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="playerCountsSelection(this)">4</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="playerCountsSelection(this)">5</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="playerCountsSelection(this)">6</a>
         </li>
     </ul>
 </span>
@@ -95,7 +105,7 @@
             <td>{{ game.id }}</td>
             <td>{% for player in game.players %}
                 {{ player.name }}
-                {% endfor %}</td>
+            {% endfor %}</td>
             <td>{{ game.server }}</td>
             <td>{{ game.startTime }}</td>
             <td>{{ game.durationTime }}</td>
@@ -169,6 +179,7 @@
         </table>
     </div>
 </div>
+
 
 
 </body>
