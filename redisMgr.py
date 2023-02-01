@@ -1,7 +1,7 @@
 import redis  # 导入redis 模块
 import config
 
-pool = redis.ConnectionPool(host=config.host, port=config.port, decode_responses=True, password=config.password)
+pool = redis.ConnectionPool(host=config.host, port=config.redis_port, decode_responses=True, password=config.password)
 my_redis = redis.Redis(connection_pool=pool)
 
 
