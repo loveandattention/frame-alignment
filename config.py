@@ -1,3 +1,4 @@
-host = "192.168.195.128"
-port = 6379
-password = "redis568178400"
+host = "172.28.195.228"
+flask_port = 12000
+redis_port = 13000
+password = "c1pwd"

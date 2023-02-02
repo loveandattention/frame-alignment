@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  flask_redis:
+    image: redis:6.0.8
+    restart: always
+    container_name: flask_redis
+    ports:
+      - "13000:6379"
+    command:
+      --requirepass c1pwd
