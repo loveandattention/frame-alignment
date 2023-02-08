@@ -6,6 +6,7 @@ import logging
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
+
 @app.after_request
 def apply_caching(response):
     # 因为前端是另一个端口，访问flask后台的是跨域访问，所以在所有response中增加cors配置，允许跨域
@@ -115,41 +116,6 @@ def getBattleList():
     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
                     f'pageNo: {pageNo}, pageSize: {pageSize}')
 
-    battleData = []
-    battleData.append({
-        'key': '1',
-        'id': '1',
-        'GameId': 'aaa',
-        'playerList': 'xxx',
-        'serverName': '甜食服',
-        'version': 1.1,
-        'startTime': '10000',
-        'duration': '100',
-        'consistStatus': True
-    })
-    battleData.append({
-        'key': '2',
-        'id': '2',
-        'GameId': 'bbb',
-        'playerList': 'yyy',
-        'serverName': '深海服',
-        'version': 1.2,
-        'startTime': '20000',
-        'duration': '200',
-        'consistStatus': False
-    })
-    battleData.append({
-        'key': '3',
-        'id': '3',
-        'GameId': 'ccc',
-        'playerList': 'zzz',
-        'serverName': '甜食服',
-        'version': 1.3,
-        'startTime': '30000',
-        'duration': '300',
-        'consistStatus': True
-    })
-
     # 后面需要迭代为根据version、serverName等去服务器查找，并且要设置索引
     # 目前直接筛选
     validBattleData = battleData
@@ -169,6 +135,150 @@ def getBattleList():
         'result': retData
     })
 
+
+@app.route('/battleDetail', methods=['GET'])
+def getBattleDetail():
+    gameId = request.args.get('gameId')
+
+    versionList = [float(x) for x in request.args.getlist('version[]')]
+    serverNameList = request.args.getlist('serverName[]')
+    pageNo = request.args.get('pageNo')
+    pageSize = request.args.get('pageSize')
+    app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
+                    f'pageNo: {pageNo}, pageSize: {pageSize}')
+
+    validBattleData = []
+
+    for item in battleData:
+        if item['GameId'] == gameId:
+            validBattleData.append(item)
+
+    if len(validBattleData) == 0:
+        retData = {
+            "pageSize": 2,
+            "pageNo": 1,
+            "totalCount": 1,  # totalCount设置为1让分页功能不显示
+            "totalPage": 10,
+            "data": []
+        }
+        return jsonify({
+            'result': retData
+        })
+
+    retData = {
+        "pageSize": 2,
+        "pageNo": 1,
+        "totalCount": 1,  # totalCount设置为1让分页功能不显示
+        "totalPage": 10,
+        "data": validBattleData
+    }
+    return jsonify({
+        'result': retData
+    })
+
+
+@app.route('/playerList', methods=['GET'])
+def getPlayerList():
+    gameId = request.args.get('gameId')
+
+    versionList = [float(x) for x in request.args.getlist('version[]')]
+    serverNameList = request.args.getlist('serverName[]')
+    pageNo = request.args.get('pageNo')
+    pageSize = request.args.get('pageSize')
+    app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
+                    f'pageNo: {pageNo}, pageSize: {pageSize}')
+
+    validBattleData = []
+
+    for item in battleData:
+        if item['GameId'] == gameId:
+            validBattleData.append(item)
+
+    if len(validBattleData) == 0:
+        retData = {
+            "pageSize": 2,
+            "pageNo": 1,
+            "totalCount": 1,
+            "totalPage": 10,
+            "data": []
+        }
+        return jsonify({
+            'result': retData
+        })
+
+    retData = {
+        "pageSize": 2,
+        "pageNo": 1,
+        "totalCount": 1,
+        "totalPage": 10,
+        "data": validBattleData[0]['playerList']
+    }
+    return jsonify({
+        'result': retData
+    })
+
+
+battleData = []
+battleData.append({
+    'key': '1',
+    'id': '1',
+    'GameId': 'aaa',
+    'playerNames': 'xxx xxx2 xxx3',
+    'playerList': [
+        {'playerName': "xxx", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"},
+        {'playerName': "xxx2", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"},
+        {'playerName': "xxx3", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"}],
+    'serverName': '甜食服',
+    'version': 1.1,
+    'startTime': '10000',
+    'duration': '100',
+    'consistStatus': True,
+    'playCounts': 1,
+    'inconsistentCounts': 2
+})
+battleData.append({
+    'key': '2',
+    'id': '2',
+    'GameId': 'bbb',
+    'playerNames': 'yyy yyy2 yyy3',
+    'playerList': [
+        {'playerName': "yyy", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"},
+        {'playerName': "yyy2", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"},
+        {'playerName': "yyy3", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"}],
+    'serverName': '深海服',
+    'version': 1.2,
+    'startTime': '20000',
+    'duration': '200',
+    'consistStatus': False,
+    'playCounts': 1,
+    'inconsistentCounts': 2
+})
+battleData.append({
+    'key': '3',
+    'id': '3',
+    'GameId': 'ccc',
+    'playerNames': 'zzz zzz2 zzz3',
+    'playerList': [
+        {'playerName': "zzz", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"},
+        {'playerName': "zzz2", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"},
+        {'playerName': "zzz3", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
+         'deviceEdition': 'x50', 'deviceId': 'did', 'stopFrame': "8000"}],
+    'serverName': '甜食服',
+    'version': 1.3,
+    'startTime': '30000',
+    'duration': '300',
+    'consistStatus': True,
+    'playCounts': 1,
+    'inconsistentCounts': 2
+})
 
 if __name__ == '__main__':
     app.run(host=config.host, port=config.flask_port)
