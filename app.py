@@ -1,10 +1,28 @@
 from flask import Flask, render_template, request, jsonify
+from sqlalchemy import and_
+
 import redisMgr
 import config
 import logging
+from exts import db
+from flask_migrate import Migrate
+from models import Battle, Player
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{config.USERNAME}:{config.PASSWORD}@{config.HOSTNAME}:{config.PORT}/{config.DATABASE}?charset=utf8"
+
+db.init_app(app)
+migrate = Migrate(app, db)
+
+
+# 测试连接是否成功
+# with app.app_context():
+#     with db.engine.connect() as conn:
+#         s = sqlalchemy.text("select 1")
+#         re = conn.execute(s)
+#         print(re.fetchone())
 
 
 @app.after_request
@@ -107,6 +125,36 @@ def getUserInfo():
     })
 
 
+# @app.route('/battleList', methods=['GET'])
+# def getBattleList():
+#     versionList = [float(x) for x in request.args.getlist('version[]')]
+#     serverNameList = request.args.getlist('serverName[]')
+#     pageNo = request.args.get('pageNo')
+#     pageSize = request.args.get('pageSize')
+#     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
+#                     f'pageNo: {pageNo}, pageSize: {pageSize}')
+#
+#     # 后面需要迭代为根据version、serverName等去服务器查找，并且要设置索引
+#     # 目前直接筛选
+#     validBattleData = battleData
+#     if versionList:
+#         validBattleData = [x for x in validBattleData if x['version'] in versionList]
+#     if serverNameList:
+#         validBattleData = [x for x in validBattleData if x['serverName'] in serverNameList]
+#
+#     retData = {
+#         "pageSize": 2,
+#         "pageNo": 1,
+#         "totalCount": 100,
+#         "totalPage": 10,
+#         "data": validBattleData
+#     }
+#     return jsonify({
+#         'result': retData
+#     })
+
+
+# 迭代为数据库交互
 @app.route('/battleList', methods=['GET'])
 def getBattleList():
     versionList = [float(x) for x in request.args.getlist('version[]')]
@@ -116,29 +164,75 @@ def getBattleList():
     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
                     f'pageNo: {pageNo}, pageSize: {pageSize}')
 
-    # 后面需要迭代为根据version、serverName等去服务器查找，并且要设置索引
-    # 目前直接筛选
-    validBattleData = battleData
-    if versionList:
-        validBattleData = [x for x in validBattleData if x['version'] in versionList]
-    if serverNameList:
-        validBattleData = [x for x in validBattleData if x['serverName'] in serverNameList]
+    if versionList and serverNameList:
+        validBattleData = Battle.query.filter(
+            and_(Battle.version.in_(versionList), Battle.server_name.in_(serverNameList)))
+    elif versionList:
+        validBattleData = Battle.query.filter(Battle.version.in_(versionList))
+    elif serverNameList:
+        validBattleData = Battle.query.filter(Battle.server_name.in_(serverNameList))
+    else:
+        validBattleData = Battle.query.all()
+
+    jsonBattleData = [battle.battleToDict() for battle in validBattleData]
 
     retData = {
-        "pageSize": 2,
-        "pageNo": 1,
-        "totalCount": 100,
-        "totalPage": 10,
-        "data": validBattleData
+        "pageSize": int(pageSize),
+        "pageNo": int(pageNo),
+        "totalCount": len(jsonBattleData),
+        "totalPage": len(jsonBattleData) / int(pageSize),
+        "data": jsonBattleData
     }
     return jsonify({
         'result': retData
     })
 
 
+# @app.route('/battleDetail', methods=['GET'])
+# def getBattleDetail():
+#     battleId = request.args.get('battleId')
+#
+#     versionList = [float(x) for x in request.args.getlist('version[]')]
+#     serverNameList = request.args.getlist('serverName[]')
+#     pageNo = request.args.get('pageNo')
+#     pageSize = request.args.get('pageSize')
+#     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
+#                     f'pageNo: {pageNo}, pageSize: {pageSize}')
+#
+#     validBattleData = []
+#
+#     for item in battleData:
+#         if item['id'] == battleId:
+#             validBattleData.append(item)
+#
+#     if len(validBattleData) == 0:
+#         retData = {
+#             "pageSize": 2,
+#             "pageNo": 1,
+#             "totalCount": 1,  # totalCount设置为1让分页功能不显示
+#             "totalPage": 10,
+#             "data": []
+#         }
+#         return jsonify({
+#             'result': retData
+#         })
+#
+#     retData = {
+#         "pageSize": 2,
+#         "pageNo": 1,
+#         "totalCount": 1,  # totalCount设置为1让分页功能不显示
+#         "totalPage": 10,
+#         "data": validBattleData
+#     }
+#     return jsonify({
+#         'result': retData
+#     })
+
+
+# 迭代为数据库交互
 @app.route('/battleDetail', methods=['GET'])
 def getBattleDetail():
-    gameId = request.args.get('gameId')
+    battleId = request.args.get('battleId')
 
     versionList = [float(x) for x in request.args.getlist('version[]')]
     serverNameList = request.args.getlist('serverName[]')
@@ -147,39 +241,68 @@ def getBattleDetail():
     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
                     f'pageNo: {pageNo}, pageSize: {pageSize}')
 
-    validBattleData = []
-
-    for item in battleData:
-        if item['GameId'] == gameId:
-            validBattleData.append(item)
-
-    if len(validBattleData) == 0:
-        retData = {
-            "pageSize": 2,
-            "pageNo": 1,
-            "totalCount": 1,  # totalCount设置为1让分页功能不显示
-            "totalPage": 10,
-            "data": []
-        }
-        return jsonify({
-            'result': retData
-        })
+    jsonBattleData = []
+    battle = Battle.query.get(battleId)
+    if battle:
+        jsonBattleData = [battle.battleToDict()]
 
     retData = {
         "pageSize": 2,
         "pageNo": 1,
         "totalCount": 1,  # totalCount设置为1让分页功能不显示
         "totalPage": 10,
-        "data": validBattleData
+        "data": jsonBattleData
     }
     return jsonify({
         'result': retData
     })
 
 
+# @app.route('/playerList', methods=['GET'])
+# def getPlayerList():
+#     battleId = request.args.get('battleId')
+#
+#     versionList = [float(x) for x in request.args.getlist('version[]')]
+#     serverNameList = request.args.getlist('serverName[]')
+#     pageNo = request.args.get('pageNo')
+#     pageSize = request.args.get('pageSize')
+#     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
+#                     f'pageNo: {pageNo}, pageSize: {pageSize}')
+#
+#     validBattleData = []
+#
+#     for item in battleData:
+#         if item['id'] == battleId:
+#             validBattleData.append(item)
+#
+#     if len(validBattleData) == 0:
+#         retData = {
+#             "pageSize": 2,
+#             "pageNo": 1,
+#             "totalCount": 1,
+#             "totalPage": 10,
+#             "data": []
+#         }
+#         return jsonify({
+#             'result': retData
+#         })
+#
+#     retData = {
+#         "pageSize": 2,
+#         "pageNo": 1,
+#         "totalCount": 1,
+#         "totalPage": 10,
+#         "data": validBattleData[0]['playerList']
+#     }
+#     return jsonify({
+#         'result': retData
+#     })
+
+
+# 迭代为数据库交互
 @app.route('/playerList', methods=['GET'])
 def getPlayerList():
-    gameId = request.args.get('gameId')
+    battleId = request.args.get('battleId')
 
     versionList = [float(x) for x in request.args.getlist('version[]')]
     serverNameList = request.args.getlist('serverName[]')
@@ -188,30 +311,18 @@ def getPlayerList():
     app.logger.info(f'battleList args is:  version: {versionList}, serverName: {serverNameList}, '
                     f'pageNo: {pageNo}, pageSize: {pageSize}')
 
-    validBattleData = []
+    jsonPlayerData = []
 
-    for item in battleData:
-        if item['GameId'] == gameId:
-            validBattleData.append(item)
-
-    if len(validBattleData) == 0:
-        retData = {
-            "pageSize": 2,
-            "pageNo": 1,
-            "totalCount": 1,
-            "totalPage": 10,
-            "data": []
-        }
-        return jsonify({
-            'result': retData
-        })
+    players = Player.query.filter_by(battle_id=battleId)
+    if players:
+        jsonPlayerData = [player.playerToDict() for player in players]
 
     retData = {
         "pageSize": 2,
         "pageNo": 1,
         "totalCount": 1,
         "totalPage": 10,
-        "data": validBattleData[0]['playerList']
+        "data": jsonPlayerData
     }
     return jsonify({
         'result': retData
@@ -222,7 +333,7 @@ battleData = []
 battleData.append({
     'key': '1',
     'id': '1',
-    'GameId': 'aaa',
+    'gameId': 'aaa',
     'playerNames': 'xxx xxx2 xxx3',
     'playerList': [
         {'playerName': "xxx", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
@@ -237,12 +348,12 @@ battleData.append({
     'duration': '100',
     'consistStatus': True,
     'playCounts': 1,
-    'inconsistentCounts': 2
+    'inconsistentFrameCounts': 2
 })
 battleData.append({
     'key': '2',
     'id': '2',
-    'GameId': 'bbb',
+    'gameId': 'bbb',
     'playerNames': 'yyy yyy2 yyy3',
     'playerList': [
         {'playerName': "yyy", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
@@ -257,12 +368,12 @@ battleData.append({
     'duration': '200',
     'consistStatus': False,
     'playCounts': 1,
-    'inconsistentCounts': 2
+    'inconsistentFrameCounts': 2
 })
 battleData.append({
     'key': '3',
     'id': '3',
-    'GameId': 'ccc',
+    'gameId': 'ccc',
     'playerNames': 'zzz zzz2 zzz3',
     'playerList': [
         {'playerName': "zzz", 'appEdition': '0.0.0', 'os': "Android", 'osEdition': '11.4', 'deviceName': 'xiaomi',
@@ -277,7 +388,7 @@ battleData.append({
     'duration': '300',
     'consistStatus': True,
     'playCounts': 1,
-    'inconsistentCounts': 2
+    'inconsistentFrameCounts': 2
 })
 
 if __name__ == '__main__':

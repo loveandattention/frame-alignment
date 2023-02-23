@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  flask_mysql:
+    image: mysql:8.0.32
+    restart: always
+    container_name: flask_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'c1pwd'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+      MYSQL_DATABASE: 'game_watchman'
+    ports:
+      - "3306:3306"
+    volumes:
+      - /app/mysql/log:/var/log/mysql
+      - /app/mysql/data:/var/lib/mysql
+      - /app/mysql/conf:/etc/mysql/conf.d
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
