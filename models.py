@@ -4,8 +4,7 @@ from exts import db
 class Battle(db.Model):
     __tablename__ = "battle"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    game_id = db.Column(db.String(255))
+    game_id = db.Column(db.String(255), primary_key=True)
     player_names = db.Column(db.String(255))
     server_name = db.Column(db.String(255))
     version = db.Column(db.String(255))
@@ -14,8 +13,9 @@ class Battle(db.Model):
     consist_status = db.Column(db.Boolean)
     play_counts = db.Column(db.Integer)
     inconsistent_frame_counts = db.Column(db.Integer)
+    replayData = db.Column(db.LargeBinary)
 
-    players = db.relationship("Player", back_populates="battle")
+    # players = db.relationship("Player", back_populates="battle")
 
     def battleToDict(self):
         return {"id": self.id, "gameId": self.game_id, "playerNames": self.player_names, "version": self.version,
@@ -27,7 +27,7 @@ class Battle(db.Model):
 class Player(db.Model):
     __tablename__ = "player"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    player_id = db.Column(db.String(255), primary_key=True)
     name = db.Column(db.String(255))
     app_edition = db.Column(db.String(255))
     os = db.Column(db.String(255))
@@ -35,10 +35,12 @@ class Player(db.Model):
     device_name = db.Column(db.String(255))
     device_edition = db.Column(db.String(255))
     device_id = db.Column(db.String(255))
-    stop_frame = db.Column(db.String(255))
+    stop_frame = db.Column(db.Integer)
 
-    battle_id = db.Column(db.Integer, db.ForeignKey("battle.id"))
-    battle = db.relationship("Battle", back_populates="players")
+    battle_id = db.Column(db.String(255))
+
+    # battle_id = db.Column(db.Integer, db.ForeignKey("battle.id"))
+    # battle = db.relationship("Battle", back_populates="players")
 
     def playerToDict(self):
         return {"playerName": self.name, "appEdition": self.app_edition, "os": self.os,

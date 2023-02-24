@@ -7,6 +7,10 @@ import logging
 from exts import db
 from flask_migrate import Migrate
 from models import Battle, Player
+from base64 import b64decode
+import pickle
+from dbImp import mysqlImp
+
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -39,6 +43,36 @@ def apply_caching(response):
 def home():
     app.logger.info("flask home")
     return '<h1>Home</h1>'
+
+
+@app.route('/uploadBattle', methods=['POST'])
+def uploadBattle():
+    app.logger.info("uploadBattle")
+    logging.info(request.data)
+    uploadInfo = pickle.loads(b64decode(request.data))
+    logging.info(uploadInfo)
+
+    game_id = uploadInfo['battleId']
+    player_names = [x['name'] for x in uploadInfo['playerInfos']]
+    server_name = uploadInfo['serverName']
+    version = uploadInfo['version']
+    start_time = uploadInfo['startTs']
+    duration = uploadInfo['duration']
+    consist_status = uploadInfo['consistStatus']
+    play_counts = len(uploadInfo['playerInfos'])
+    inconsistent_frame_counts = uploadInfo['inconsistentFrameCounts']
+    replay_info = pickle.dumps(uploadInfo['replay'])  # bytes type
+
+    player_infos = uploadInfo['playerInfos']
+
+    logging.info(f'game_id: {game_id}, player_names: {player_names}, server_name: {server_name}, version: {version}, '
+                 f'start_time: {start_time}, duration: {duration}, consist_status: {consist_status}, '
+                 f'play_counts: {play_counts}, inconsistent_frame_counts: {inconsistent_frame_counts}, '
+                 f'player_infos: {player_infos}')
+    uploadInfo['replay'] = replay_info
+    mysqlImp.addBattleData(uploadInfo)
+    # recordFile、battleId、playerId、ts、serverName、version、duration、consist
+    return 'uploadBattle Return'
 
 
 @app.route('/gameInfos')
