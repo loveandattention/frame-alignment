@@ -41,11 +41,11 @@ def battleAdd(battleData):
                         play_counts=battleItem["playCounts"],
                         inconsistent_frame_counts=battleItem["inconsistentFrameCounts"])
         for playerItem in battleItem["playerList"]:
-            player = Player(name=playerItem["playerName"], app_edition=playerItem["appEdition"], os=playerItem["os"],
+            player = Player(player_id=playerItem["playerId"], name=playerItem["playerName"], app_edition=playerItem["appEdition"], os=playerItem["os"],
                             os_edition=playerItem["osEdition"], device_name=playerItem["deviceName"],
                             device_edition=playerItem["deviceEdition"], device_id=playerItem["deviceId"],
-                            stop_frame=playerItem["stopFrame"])
-            battle.players.append(player)
+                            stop_frame=playerItem["stopFrame"], battle_id=playerItem["battleId"])
+            db.session.add(player)
         db.session.add(battle)
         db.session.commit()
 

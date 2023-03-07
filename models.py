@@ -2,7 +2,7 @@ from exts import db
 
 
 class Battle(db.Model):
-    __tablename__ = "battle"
+    __tablename__ = "battles"
 
     game_id = db.Column(db.String(255), primary_key=True)
     player_names = db.Column(db.String(255))
@@ -18,16 +18,17 @@ class Battle(db.Model):
     # players = db.relationship("Player", back_populates="battle")
 
     def battleToDict(self):
-        return {"id": self.id, "gameId": self.game_id, "playerNames": self.player_names, "version": self.version,
+        return {"gameId": self.game_id, "playerNames": self.player_names, "version": self.version,
                 "serverName": self.server_name, "startTime": self.start_time, "duration": self.duration,
                 "consistStatus": self.consist_status, "playCounts": self.play_counts,
                 "inconsistentFrameCounts": self.inconsistent_frame_counts}
 
 
 class Player(db.Model):
-    __tablename__ = "player"
+    __tablename__ = "players"
 
-    player_id = db.Column(db.String(255), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    player_id = db.Column(db.String(255))
     name = db.Column(db.String(255))
     app_edition = db.Column(db.String(255))
     os = db.Column(db.String(255))
@@ -41,6 +42,9 @@ class Player(db.Model):
 
     # battle_id = db.Column(db.Integer, db.ForeignKey("battle.id"))
     # battle = db.relationship("Battle", back_populates="players")
+
+    # 定义索引
+    __table_args__ = (db.Index('idx_player_id', 'player_id'), )
 
     def playerToDict(self):
         return {"playerName": self.name, "appEdition": self.app_edition, "os": self.os,
