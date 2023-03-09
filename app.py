@@ -10,6 +10,7 @@ from models import Battle, Player
 from base64 import b64decode
 import pickle
 from dbImp import mysqlImp
+from base64 import b64encode
 
 
 app = Flask(__name__)
@@ -74,6 +75,24 @@ def uploadBattle():
     # recordFile、battleId、playerId、ts、serverName、version、duration、consist
     return 'uploadBattle Return'
 
+
+@app.route('/downloadBattle', methods=['GET'])
+def downloadBattle():
+    app.logger.info("downloadBattle")
+    game_id = request.args.get('battleId')
+    logging.info(f'czx downloadBattle {game_id}')
+    battleData = mysqlImp.getBattleData(game_id)
+    if not battleData:
+        return jsonify({
+            'error': f'no battle data {game_id}'
+        })
+    replayData = pickle.loads(battleData.replayData)
+
+    return jsonify({
+        'startInfo': b64encode(replayData['startInfo']).decode(),
+        'frameInfo': replayData['frameInfo'],
+        'game_id': game_id
+    })
 
 @app.route('/gameInfos')
 def games_all_info():  # put application's code here

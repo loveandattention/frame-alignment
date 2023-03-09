@@ -51,3 +51,8 @@ def addBattleData(battleData):
 
     db.session.add(battle)
     db.session.commit()
+
+
+def getBattleData(game_id) -> Battle:
+    battle = Battle.query.filter_by(game_id=game_id).first()
+    return battle
